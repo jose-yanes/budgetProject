@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Budget App</h1>
+
+    <form action="/" method="POST">
+        <input name="monto" placeholder="Monto" type="number" min="0" step="0.1">
+        <input name="fecha" placeholder="Fecha" type="date">
+
+        <select name="formaPago">
+            <option value="efectivo">Efectivo</option>
+            <option value="itauDeb">ITAU Debito</option>
+            <option value="itauCred">ITAU Credito</option>
+            <option value="ocaCred">OCA Credito</option>
+            <option value="ocaBlue">OCA Blue</option>
+            <option value="prex">Prex</option>
+        </select>
+    
+        <select name="categoria">
+            <option value="libros">Libros</option>
+            <option value="super">Super</option>
+            <option value="peaje">Peaje</option>
+            <option value="nafta">Nafta</option>
+        </select>
+
+        <select name="moneda">
+            <option value="pesos">UYU</option>
+            <option value="dolares">USD</option>
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+    
+
+</body>
+</html>
