@@ -11,6 +11,7 @@
     <h1>Budget App</h1>
 
     <form action="/" method="POST">
+
         <input name="monto" placeholder="Monto" type="number" min="0" step="0.1">
         <input name="fecha" placeholder="Fecha" type="date">
 
@@ -31,9 +32,11 @@
         </select>
 
         <select name="moneda">
-            <option value="pesos">UYU</option>
-            <option value="dolares">USD</option>
+            <option value="UYU">UYU</option>
+            <option value="USD">USD</option>
         </select>
+
+        <input name="nota" placeholder="notas" type="text">
 
         <input type="submit" value="Submit">
     </form>

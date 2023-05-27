@@ -1,0 +1,22 @@
+***
+If (Categoria === "Super" || "Auto"){
+    Sub dividir gasto para saber en que especificamente
+    [alcohol,comida,limpieza],[peaje,nafta,mecanico,patente]
+}
+***
+
+***
+Option for editing expenses after creation. Add payment methods, expense categories, etc
+***
+
+***
+Logging option, diff collection for every user?
+***
+
+***
+Sanitization of input ((Important for "Notes"));
+***
+
+***
+Mongo backup
+***

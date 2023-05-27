@@ -2,12 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-/**
- * If (Categoria === "Super" || "Auto"){
- *      Sub dividir gasto para saber en que especificamente
- *         [alcohol,comida,limpieza],[peaje,nafta,mecanico,patente]
- * } 
- */
+
 
 const app = express();
 app.use(express.static("public"));
@@ -21,12 +16,11 @@ const expenseSchema = new mongoose.Schema({
     fecha: Date,
     formaPago: String,
     categoria: String,
-    moneda: String
+    moneda: String,
+    nota: String
 })
 
 const expense = mongoose.model("expense",expenseSchema);
-
-
 
 
 app.route("/")
@@ -37,7 +31,7 @@ app.route("/")
 .post((req,res)=>{
 
     saveExpense(req.body);
-    res.send("Expense saved");
+    res.sendFile(`${__dirname}/savedexpense.html`);
     
 })
 
@@ -48,7 +42,8 @@ const saveExpense = async (expenseBody) =>{
         fecha: expenseBody.fecha,
         formaPago: expenseBody.formaPago,
         categoria: expenseBody.categoria,
-        moneda: expenseBody.moneda
+        moneda: expenseBody.moneda,
+        nota: expenseBody.nota
     });
 
     await newExpense.save();
