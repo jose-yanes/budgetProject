@@ -27,7 +27,6 @@ app.route("/")
 .get((req,res)=>{
     res.sendFile(`${__dirname}/index.html`);
 })
-
 .post((req,res)=>{
 
     saveExpense(req.body);
@@ -35,6 +34,25 @@ app.route("/")
     
 })
 
+app.route("/budget")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/budget.html`);
+})
+.post((req,res)=>{
+    console.log(`From Date ${req.body.fromDate}`);
+    console.log(`To Date ${req.body.toDate}`);
+
+    const fromDate = req.body.fromDate;
+    const toDate = req.body.toDate;
+
+    monthlyView(fromDate,toDate);
+
+    res.send('Done :)');
+})
+
+//Functions
+
+//Save the new expense to the DB
 const saveExpense = async (expenseBody) =>{
 
     const newExpense = await new expense({
@@ -46,9 +64,22 @@ const saveExpense = async (expenseBody) =>{
         nota: expenseBody.nota
     });
 
+    console.log(newExpense.fecha.getDate());
+    console.log(newExpense.fecha.getMonth());
+    console.log(newExpense.fecha.getFullYear());
+
     await newExpense.save();
 }
 
+//Look for the expenses on a range of time
+const monthlyView = async (fromDate, toDate) =>{
+    
+    let results = await expense.find({
+        fecha: {$gte: fromDate, $lte: toDate}
+    })
+
+    
+}
 
 
 app.listen(port,()=>{
