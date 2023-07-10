@@ -1,20 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+require('dotenv').config();
 
-
+const MONGO_URL = process.env.MONGO_URL;
 
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
 const port = 3000;
 
-mongoose.connect("mongodb://127.0.0.1:27017/budget");
+mongoose.connect(MONGO_URL);
 
 const expenseSchema = new mongoose.Schema({
     monto: Number,
     fecha: Date,
-    formaPago: String,
     categoria: String,
     moneda: String,
     nota: String
@@ -30,24 +30,8 @@ app.route("/")
 .post((req,res)=>{
 
     saveExpense(req.body);
-    res.sendFile(`${__dirname}/savedexpense.html`);
+    res.redirect('/')
     
-})
-
-app.route("/budget")
-.get((req,res)=>{
-    res.sendFile(`${__dirname}/budget.html`);
-})
-.post((req,res)=>{
-    console.log(`From Date ${req.body.fromDate}`);
-    console.log(`To Date ${req.body.toDate}`);
-
-    const fromDate = req.body.fromDate;
-    const toDate = req.body.toDate;
-
-    monthlyView(fromDate,toDate);
-
-    res.send('Done :)');
 })
 
 //Functions
@@ -64,10 +48,6 @@ const saveExpense = async (expenseBody) =>{
         nota: expenseBody.nota
     });
 
-    console.log(newExpense.fecha.getDate());
-    console.log(newExpense.fecha.getMonth());
-    console.log(newExpense.fecha.getFullYear());
-
     await newExpense.save();
 }
 
@@ -78,7 +58,6 @@ const monthlyView = async (fromDate, toDate) =>{
         fecha: {$gte: fromDate, $lte: toDate}
     })
 
-    
 }
 
 

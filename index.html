@@ -8,27 +8,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Budget App</h1>
+    <h1>BUDGET APP</h1>
 
-    <form action="/" method="POST">
+    <form action="/" method="POST" class="expensesForm">
 
         <input name="monto" placeholder="Monto" type="number" min="0" step="0.1">
         <input name="fecha" placeholder="Fecha" type="date">
-
-        <select name="formaPago">
-            <option value="efectivo">Efectivo</option>
-            <option value="itauDeb">ITAU Debito</option>
-            <option value="itauCred">ITAU Credito</option>
-            <option value="ocaCred">OCA Credito</option>
-            <option value="ocaBlue">OCA Blue</option>
-            <option value="prex">Prex</option>
-        </select>
     
         <select name="categoria">
             <option value="libros">Libros</option>
             <option value="super">Super</option>
             <option value="peaje">Peaje</option>
             <option value="nafta">Nafta</option>
+            <option value="facturas">Facturas</option>
+            <option value="varios">Varios</option>
+            <option value="comidaFuera">Comida Afuera</option>
+            <option value="servicios">Servicios</option>
+            <option value="delivery">Delivery</option>
         </select>
 
         <select name="moneda">
@@ -38,13 +34,6 @@
 
         <input name="nota" placeholder="notas" type="text">
         <input type="submit" value="Submit">
-
-        <a href="./budget">Budget</a>
     </form>
-
-
-
-    
-
 </body>
 </html>

@@ -1,10 +1,8 @@
 body{
-    background-color: #015249;
-}
-
-h1{
-    color:#A5A5AF;
-    font-family: Arial, Helvetica, sans-serif;
+    background-color: #49274A;
+    text-align: center;
+    color:white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 h1, form{
@@ -12,13 +10,12 @@ h1, form{
 }
 
 input, select{
+    border-radius: 8px;
     padding: 4px;
 }
 
-button{
-    color: white;
-    font-weight: bold;
-    /* background-color: rgb(79, 75, 204); */
-    border-radius: 6px;
-    padding: 4px;
+.expensesForm {
+    padding-top: 30px;
 }
+
+/* #49274A   #94618E*/
