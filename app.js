@@ -23,6 +23,7 @@ const expenseSchema = new mongoose.Schema({
 const expense = mongoose.model("expense",expenseSchema);
 
 
+
 app.route("/")
 .get((req,res)=>{
     res.sendFile(`${__dirname}/index.html`);
@@ -30,7 +31,7 @@ app.route("/")
 .post((req,res)=>{
 
     saveExpense(req.body);
-    res.redirect('/')
+    res.redirect('/?success=true');
     
 })
 

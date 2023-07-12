@@ -20,3 +20,7 @@ Sanitization of input ((Important for "Notes"));
 ***
 Mongo backup
 ***
+
+***
+Posibilidad de agregar limites a cada categoria, enviar correo o alerta cuando falte X cantidad para llegar al limite
+***
