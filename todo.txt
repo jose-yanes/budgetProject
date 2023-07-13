@@ -14,10 +14,6 @@ Logging option, diff collection for every user?
 ***
 
 ***
-Sanitization of input ((Important for "Notes"));
-***
-
-***
 Mongo backup
 ***
 
