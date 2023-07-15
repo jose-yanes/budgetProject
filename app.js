@@ -35,6 +35,21 @@ app.route("/")
     
 })
 
+app.route("/views")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/views.html`)
+})
+.post((req,res)=>{
+    const fromDate = req.body.fromDate;
+    const toDate = req.body.toDate;
+
+    console.log(fromDate);
+    console.log(toDate);
+
+    monthlyView(fromDate,toDate);
+})
+
+
 //Functions
 
 //Save the new expense to the DB
@@ -58,6 +73,7 @@ const monthlyView = async (fromDate, toDate) =>{
     let results = await expense.find({
         fecha: {$gte: fromDate, $lte: toDate}
     })
+    console.log(results);
 
 }
 
