@@ -8,6 +8,7 @@ const MONGO_URL = process.env.MONGO_URL;
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 const port = 3000;
 
 mongoose.connect(MONGO_URL);
@@ -39,14 +40,24 @@ app.route("/views")
 .get((req,res)=>{
     res.sendFile(`${__dirname}/views.html`)
 })
-.post((req,res)=>{
-    const fromDate = req.body.fromDate;
-    const toDate = req.body.toDate;
+.post(async (req,res)=>{
+    try{
+        console.log(req.body);
+        const fromDate = req.body.fromDate;
+        const toDate = req.body.toDate;
+    
+        console.log(fromDate);
+        console.log(toDate);
+    
+        const monthResults = await monthlyView(fromDate,toDate);
+        res.send(monthResults);
 
-    console.log(fromDate);
-    console.log(toDate);
+    }catch(err){
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 
-    monthlyView(fromDate,toDate);
+
 })
 
 
@@ -73,7 +84,7 @@ const monthlyView = async (fromDate, toDate) =>{
     let results = await expense.find({
         fecha: {$gte: fromDate, $lte: toDate}
     })
-    console.log(results);
+    return results;
 
 }
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Views</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="views.js" defer></script>
 </head>
@@ -17,13 +18,13 @@
           </ul>
         </nav>
     </header>
-    <form action="/views" method="POST" class="expensesForm">
-        <h2>Select the month 😊</h2>
-        <input name="fromDate" placeholder="From Date" type="date">
-        <input name="toDate" placeholder="To Date" type="date">
-        <input type="submit" value="Get View🐱‍🏍">
-    </form>
-    <!--Se puede con una API hacer charts de mongo pero con un rango de fechas?
-    Sino como puedo hacer para visualizar datos? d3js?-->
+
+    <input name="fromDate" placeholder="01/06/23" type="date" id="fromDate">
+    <input name="toDate" placeholder="30/06/23" type="date" id="toDate">
+    <input type="submit" value="Get View🐱‍🏍" id="submitDate">
+
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
 </body>
 </html>
