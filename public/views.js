@@ -1,4 +1,5 @@
 const ctx = document.getElementById('myChart');
+const totalAmount = document.getElementById('totalAmount');
 const fromDate = document.getElementById('fromDate');
 const toDate = document.getElementById('toDate');
 const submitDate = document.getElementById('submitDate');
@@ -19,6 +20,8 @@ submitDate.addEventListener('click', async (e) => {
         });
         if(response.ok) {
             const data = await response.json();
+            console.log(data);
+            createView(data);
         }else {
             throw new Error('Response not OK');
         }
@@ -27,9 +30,57 @@ submitDate.addEventListener('click', async (e) => {
     }
 })
 
+const createView = (dataDB) => {
 
-/**
- * Crear una función a la cual pasarle la data y que cree un chart, necesitaría pasar las categorías al valor labels y los resultados despues
- * De la data debería primero recorrer el array para ver cuantas categorías hubieron ese tiempo para asi crear las labels
- * Luego sumar el valor de cada gasto con X label y pasar como resultado final las sumas al chart
- */
+    const categories = [];
+    const amounts = [];
+    let total = 0;
+
+    dataDB.forEach(expense =>{
+        if(!categories.includes(expense.categoria)){
+            categories.push(expense.categoria);
+        }
+        total += expense.monto;
+    })
+    console.log(categories);
+    dataDB.forEach(expense =>{
+        const index = categories.indexOf(expense.categoria);
+        console.log(index);
+
+        if(amounts.length === 0 || amounts[index] === undefined){
+            amounts.push(expense.monto);
+        }else if(amounts[index] !== undefined){
+            amounts[index] = amounts[index] + expense.monto;
+        }
+    })
+
+    if(categories.length === amounts.length){
+        console.log('Los arrays coinciden');
+    }else{
+        console.error('Los arrays NO coinciden')
+    }
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: categories,
+          datasets: [{
+            label: 'Gastos',
+            data: amounts,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+    totalAmount.innerHTML = `Total ${total}`;
+    Object.assign(totalAmount.style,{"font-size": "100px","border-style": "solid","padding-left": "10px","padding-right": "10px"})
+    
+}
+

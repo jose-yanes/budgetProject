@@ -42,14 +42,10 @@ app.route("/views")
 })
 .post(async (req,res)=>{
     try{
-        console.log(req.body);
         const fromDate = req.body.fromDate;
         const toDate = req.body.toDate;
-    
-        console.log(fromDate);
-        console.log(toDate);
-    
         const monthResults = await monthlyView(fromDate,toDate);
+        
         res.send(monthResults);
 
     }catch(err){

@@ -58,3 +58,8 @@ input, select{
 .header .nav-links li a:hover{
     color: #ffbc0e;
 }
+
+canvas{
+    height: 650px !important;
+    width: 650px !important;
+}
