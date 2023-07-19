@@ -20,3 +20,10 @@ Mongo backup
 ***
 Posibilidad de agregar limites a cada categoria, enviar correo o alerta cuando falte X cantidad para llegar al limite
 ***
+
+***
+app.route('/') debería llevar al login, y solo si el usuario existe, mostrar el resto de la web.
+***
+***
+Agregar estilos al Register y login
+***

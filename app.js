@@ -13,6 +13,8 @@ const port = 3000;
 
 mongoose.connect(MONGO_URL);
 
+//Expense Schema
+
 const expenseSchema = new mongoose.Schema({
     monto: Number,
     fecha: Date,
@@ -21,13 +23,23 @@ const expenseSchema = new mongoose.Schema({
     nota: String
 })
 
-const expense = mongoose.model("expense",expenseSchema);
+const Expense = mongoose.model("expense",expenseSchema);
+
+//User Schema
+
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+});
+
+const User = mongoose.model("user",userSchema);
+
 
 
 
 app.route("/")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/index.html`);
+    res.sendFile(`${__dirname}/public/index.html`);
 })
 .post((req,res)=>{
 
@@ -38,7 +50,7 @@ app.route("/")
 
 app.route("/views")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/views.html`)
+    res.sendFile(`${__dirname}/public/views.html`)
 })
 .post(async (req,res)=>{
     try{
@@ -57,12 +69,41 @@ app.route("/views")
 })
 
 
+app.route("/login")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/public/login.html`)
+})
+.post(async (req,res)=>{
+    const usernameBody = req.body.username;
+    const passwordBody = req.body.password;
+
+    const userTrue = await findUser(usernameBody,passwordBody);
+    console.log(userTrue);
+    if(userTrue){
+        res.send("Success");
+    }
+})
+app.route("/register")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/public/register.html`);
+})
+.post((req,res)=>{
+    const newUser = new User({
+        username : req.body.username,
+        password : req.body.password
+    })
+
+    newUser.save()
+    res.send("User Saved");
+})
+
+
 //Functions
 
 //Save the new expense to the DB
 const saveExpense = async (expenseBody) =>{
 
-    const newExpense = await new expense({
+    const newExpense = await new Expense({
         monto: parseFloat(expenseBody.monto),
         fecha: expenseBody.fecha,
         formaPago: expenseBody.formaPago,
@@ -77,11 +118,27 @@ const saveExpense = async (expenseBody) =>{
 //Look for the expenses on a range of time
 const monthlyView = async (fromDate, toDate) =>{
     
-    let results = await expense.find({
+    let results = await Expense.find({
         fecha: {$gte: fromDate, $lte: toDate}
     })
     return results;
 
+}
+
+const findUser = async (user,pass) =>{
+    const userFound = await User.findOne({
+        username : user
+    })
+
+    if(userFound){
+        if(userFound.password === pass){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false
+    }
 }
 
 
