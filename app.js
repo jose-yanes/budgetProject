@@ -37,6 +37,7 @@ const Expense = mongoose.model("expense",expenseSchema);
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
+    //add category and methods
 });
 
 const User = mongoose.model("user",userSchema);
@@ -121,7 +122,7 @@ app.route("/logout")
     })
 })
 
-//Functions
+//FUNCTIONS====================================
 
 //Save the new expense to the DB
 const saveExpense = async (expenseBody) =>{
@@ -181,3 +182,17 @@ const ifLogged = (request,response,route,fallbackRoute) =>{
 app.listen(port,()=>{
     console.log(`App Listening on port ${port}`);
 })
+
+/**
+ * TODO LIST =======================
+ * 
+ * Chance to add payment methods and expense categories on "settings",
+ * and save those on the User object in Mongo.
+ * 
+ * Chance to add a limit on the every category, so if you're close to the limit you will receive an email.
+ * 
+ * Password security
+ * 
+ * Add an alert when logging fail like "wrong user/pass"
+ * 
+ */
