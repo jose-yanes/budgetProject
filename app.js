@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require('dotenv').config();
@@ -7,6 +8,11 @@ require('dotenv').config();
 const MONGO_URL = process.env.MONGO_URL_LOCAL;
 
 const app = express();
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+}))
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -36,36 +42,39 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("user",userSchema);
 
 
+//ROUTES
 
 app.route("/")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/public/login.html`)
+    ifLogged(req,res,'expenses','/');
 })
 .post(async (req,res)=>{
     const usernameBody = req.body.username;
     const passwordBody = req.body.password;
 
     const userTrue = await findUser(usernameBody,passwordBody);
-    console.log(userTrue);
     if(userTrue){
+        req.session.logged_in = true;
         res.redirect("/expenses.html");
+    }else{
+        res.redirect('/');
+        //ADD ALERT "USER NOT FOUND"
     }
 })
 
 app.route("/expenses")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/public/expenses.html`);
+    ifLogged(req,res,'expenses','/');
 })
 .post((req,res)=>{
-
     saveExpense(req.body);
     res.redirect('/expenses?success=true');
-    
 })
 
 app.route("/views")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/public/views.html`)
+    ifLogged(req,res,'views','/');
+    
 })
 .post(async (req,res)=>{
     try{
@@ -99,12 +108,18 @@ app.route("/register")
 
 app.route("/settings")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/public/settings.html`);
-})
-.post((req,res)=>{
-
+    ifLogged(req,res,'settings','/');;
 })
 
+app.route("/logout")
+.get((req,res)=>{
+    req.session.destroy((err) => {
+        if(err){
+            console.error(`Error clearing session: ${err}`);
+        }
+        return res.sendFile(`${__dirname}/public/logout.html`);
+    })
+})
 
 //Functions
 
@@ -146,6 +161,19 @@ const findUser = async (user,pass) =>{
         }
     }else{
         return false
+    }
+}
+
+const ifLogged = (request,response,route,fallbackRoute) =>{
+    if(request.session.logged_in){
+        response.sendFile(`${__dirname}/public/${route}.html`);
+    }else{
+        if(fallbackRoute === '/'){
+            response.sendFile(`${__dirname}/public/login.html`)
+        }else{
+            response.redirect(`${fallbackRoute}`);
+        }
+        
     }
 }
 
