@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require('dotenv').config();
 
-const MONGO_URL = process.env.MONGO_URL;
+// const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGO_URL_LOCAL;
 
 const app = express();
 app.use(express.static("public"));
@@ -36,10 +37,24 @@ const User = mongoose.model("user",userSchema);
 
 
 
-
 app.route("/")
 .get((req,res)=>{
-    res.sendFile(`${__dirname}/public/index.html`);
+    res.sendFile(`${__dirname}/public/login.html`)
+})
+.post(async (req,res)=>{
+    const usernameBody = req.body.username;
+    const passwordBody = req.body.password;
+
+    const userTrue = await findUser(usernameBody,passwordBody);
+    console.log(userTrue);
+    if(userTrue){
+        res.redirect("/expenses.html");
+    }
+})
+
+app.route("/expenses")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/public/expenses.html`);
 })
 .post((req,res)=>{
 
@@ -68,21 +83,6 @@ app.route("/views")
 
 })
 
-
-app.route("/login")
-.get((req,res)=>{
-    res.sendFile(`${__dirname}/public/login.html`)
-})
-.post(async (req,res)=>{
-    const usernameBody = req.body.username;
-    const passwordBody = req.body.password;
-
-    const userTrue = await findUser(usernameBody,passwordBody);
-    console.log(userTrue);
-    if(userTrue){
-        res.send("Success");
-    }
-})
 app.route("/register")
 .get((req,res)=>{
     res.sendFile(`${__dirname}/public/register.html`);
@@ -95,6 +95,14 @@ app.route("/register")
 
     newUser.save()
     res.send("User Saved");
+})
+
+app.route("/settings")
+.get((req,res)=>{
+    res.sendFile(`${__dirname}/public/settings.html`);
+})
+.post((req,res)=>{
+
 })
 
 
