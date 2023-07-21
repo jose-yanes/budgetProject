@@ -59,7 +59,7 @@ app.route("/expenses")
 .post((req,res)=>{
 
     saveExpense(req.body);
-    res.redirect('/?success=true');
+    res.redirect('/expenses?success=true');
     
 })
 
