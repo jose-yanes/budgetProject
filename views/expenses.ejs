@@ -28,16 +28,11 @@
         <input name="fecha" placeholder="Fecha" type="date">
     
         <select name="categoria">
-            <option value="libros">Libros</option>
-            <option value="super">Super</option>
-            <option value="peaje">Peaje</option>
-            <option value="nafta">Nafta</option>
-            <option value="facturas">Facturas</option>
-            <option value="varios">Varios</option>
-            <option value="comidaFuera">Comida Afuera</option>
-            <option value="servicios">Servicios</option>
-            <option value="delivery">Delivery</option>
+            <% options.forEach((option) => { %>
+                <option value="<%= option %>"><%= option %></option>
+            <% }); %>
         </select>
+
 
         <select name="moneda">
             <option value="UYU">UYU</option>

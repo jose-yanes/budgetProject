@@ -18,6 +18,10 @@
         </nav>
     </header>
     <h1>Settings</h1>
+    <h3>PAYMENT METHODS</h3>
+    <% options.forEach((option) => { %>
+        <option value="<%= option %>"><%= option %></option>
+    <% }); %>
     <!--Here you will be able to set different settings accoutn
     the most important will be ranges for every expense category or for the total amount of expenses.
     If you set a limit you should be notified (via email?) that the limit is close to be passed -->

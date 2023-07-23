@@ -2,12 +2,14 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const ejs = require("ejs");
 require('dotenv').config();
 
 // const MONGO_URL = process.env.MONGO_URL;
 const MONGO_URL = process.env.MONGO_URL_LOCAL;
 
 const app = express();
+app.set('view engine','ejs');
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
@@ -19,6 +21,8 @@ app.use(bodyParser.json());
 const port = 3000;
 
 mongoose.connect(MONGO_URL);
+
+CATEGORIES = [];
 
 //Expense Schema
 
@@ -37,7 +41,7 @@ const Expense = mongoose.model("expense",expenseSchema);
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
-    //add category and methods
+    categorias : Array
 });
 
 const User = mongoose.model("user",userSchema);
@@ -47,7 +51,7 @@ const User = mongoose.model("user",userSchema);
 
 app.route("/")
 .get((req,res)=>{
-    ifLogged(req,res,'expenses','/');
+    ifLogged(req,res,'expenses','/',CATEGORIES);
 })
 .post(async (req,res)=>{
     const usernameBody = req.body.username;
@@ -56,20 +60,19 @@ app.route("/")
     const userTrue = await findUser(usernameBody,passwordBody);
     if(userTrue){
         req.session.logged_in = true;
-        res.redirect("/expenses.html");
+        res.render('expenses',{options:CATEGORIES})
     }else{
         res.redirect('/');
-        //ADD ALERT "USER NOT FOUND"
     }
 })
 
 app.route("/expenses")
 .get((req,res)=>{
-    ifLogged(req,res,'expenses','/');
+    ifLogged(req,res,'expenses','/',CATEGORIES);
 })
 .post((req,res)=>{
     saveExpense(req.body);
-    res.redirect('/expenses?success=true');
+    res.redirect('expenses?success=true');
 })
 
 app.route("/views")
@@ -104,12 +107,12 @@ app.route("/register")
     })
 
     newUser.save()
-    res.send("User Saved");
+    res.redirect("/");
 })
 
 app.route("/settings")
 .get((req,res)=>{
-    ifLogged(req,res,'settings','/');;
+    ifLogged(req,res,'settings','/',CATEGORIES);;
 })
 
 app.route("/logout")
@@ -118,7 +121,7 @@ app.route("/logout")
         if(err){
             console.error(`Error clearing session: ${err}`);
         }
-        return res.sendFile(`${__dirname}/public/logout.html`);
+        return res.render('logout');
     })
 })
 
@@ -156,6 +159,8 @@ const findUser = async (user,pass) =>{
 
     if(userFound){
         if(userFound.password === pass){
+            CATEGORIES = userFound.categorias;
+            console.log(CATEGORIES);
             return true;
         }else{
             return false;
@@ -165,14 +170,14 @@ const findUser = async (user,pass) =>{
     }
 }
 
-const ifLogged = (request,response,route,fallbackRoute) =>{
-    if(request.session.logged_in){
-        response.sendFile(`${__dirname}/public/${route}.html`);
+const ifLogged = (request,response,route,fallbackRoute,sendOptions) =>{
+    if(request.session.logged_in){;
+        response.render(route,{options:sendOptions})
     }else{
         if(fallbackRoute === '/'){
-            response.sendFile(`${__dirname}/public/login.html`)
+            response.render('login');
         }else{
-            response.redirect(`${fallbackRoute}`);
+            response.render(fallbackRoute);
         }
         
     }
