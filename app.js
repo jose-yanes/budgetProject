@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const ejs = require("ejs");
 require('dotenv').config();
 
-// const MONGO_URL = process.env.MONGO_URL;
-const MONGO_URL = process.env.MONGO_URL_LOCAL;
+const MONGO_URL = process.env.MONGO_URL;
+// const MONGO_URL = process.env.MONGO_URL_LOCAL;
 
 const app = express();
 app.set('view engine','ejs');
@@ -169,6 +169,7 @@ const findUser = async (user,pass) =>{
         return false
     }
 }
+
 
 const ifLogged = (request,response,route,fallbackRoute,sendOptions) =>{
     if(request.session.logged_in){;
