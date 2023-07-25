@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const ejs = require("ejs");
 require('dotenv').config();
 
-const MONGO_URL = process.env.MONGO_URL;
-// const MONGO_URL = process.env.MONGO_URL_LOCAL;
+// const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGO_URL_LOCAL;
 
 const app = express();
 app.set('view engine','ejs');
@@ -22,7 +22,8 @@ const port = 3000;
 
 mongoose.connect(MONGO_URL);
 
-CATEGORIES = [];
+let CATEGORIES = [];
+let USER = '';
 
 //Expense Schema
 
@@ -114,6 +115,14 @@ app.route("/settings")
 .get((req,res)=>{
     ifLogged(req,res,'settings','/',CATEGORIES);;
 })
+.post(async (req,res) => {
+    const bodyCategory = req.body.category;
+
+    await updateCategory(bodyCategory);
+
+    res.redirect("/settings");
+
+})
 
 app.route("/logout")
 .get((req,res)=>{
@@ -161,6 +170,7 @@ const findUser = async (user,pass) =>{
         if(userFound.password === pass){
             CATEGORIES = userFound.categorias;
             console.log(CATEGORIES);
+            USER = userFound.username;
             return true;
         }else{
             return false;
@@ -184,6 +194,21 @@ const ifLogged = (request,response,route,fallbackRoute,sendOptions) =>{
     }
 }
 
+const updateCategory = async (category) =>{
+    if ( CATEGORIES.includes(category) ) {
+        CATEGORIES = CATEGORIES.filter( (cat) => {
+            return cat !== category;
+        })
+    }else{
+        CATEGORIES.push(category);
+    }
+    
+    let profile = await User.findOneAndUpdate(
+        {username : USER},
+        {categorias: CATEGORIES}
+    );
+}
+
 
 app.listen(port,()=>{
     console.log(`App Listening on port ${port}`);
@@ -192,13 +217,12 @@ app.listen(port,()=>{
 /**
  * TODO LIST =======================
  * 
- * Chance to add payment methods and expense categories on "settings",
- * and save those on the User object in Mongo.
- * 
  * Chance to add a limit on the every category, so if you're close to the limit you will receive an email.
  * 
  * Password security
  * 
  * Add an alert when logging fail like "wrong user/pass"
+ * 
+ * Add "Category Deleted" or "Category Added" allert in Settings
  * 
  */
