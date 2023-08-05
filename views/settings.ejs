@@ -21,7 +21,7 @@
     <h3>Your categories</h3>
     <p>Use this list to delete any category from your account</p>
     <form action="/settings" method="post">
-      <select name="category">
+      <select name="category" id="categorySelector">
         <% options.forEach((option) => { %>
           <option value="<%= option %>"><%= option %></option>
         <% });%> 
@@ -35,6 +35,7 @@
       <input name="category" placeholder="New category" type="text">
       <input type="submit" value="Guardar!">
     </form>
+    <script src="settings.js" defer></script>
 
 </body>
 </html>

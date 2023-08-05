@@ -218,6 +218,7 @@ app.listen(port,()=>{
  * TODO LIST =======================
  * 
  * Chance to add a limit on the every category, so if you're close to the limit you will receive an email.
+ * Edit the Category array to be an array of objects with {category:'',limit:''}
  * 
  * Password security
  * 
