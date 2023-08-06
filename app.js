@@ -63,7 +63,7 @@ app.route("/")
         req.session.logged_in = true;
         res.render('expenses',{options:CATEGORIES})
     }else{
-        res.redirect('/');
+        res.redirect('/?cred=false');
     }
 })
 
@@ -169,7 +169,6 @@ const findUser = async (user,pass) =>{
     if(userFound){
         if(userFound.password === pass){
             CATEGORIES = userFound.categorias;
-            console.log(CATEGORIES);
             USER = userFound.username;
             return true;
         }else{
