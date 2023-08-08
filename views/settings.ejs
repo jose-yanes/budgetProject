@@ -22,6 +22,7 @@
     <p>Use this list to delete any category from your account</p>
     <form action="/settings" method="post">
       <select name="category" id="categorySelector">
+        <option value="emptyOption">Select one option</option>
         <% options.forEach((option) => { %>
           <option value="<%= option %>"><%= option %></option>
         <% });%> 

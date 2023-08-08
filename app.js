@@ -212,17 +212,3 @@ const updateCategory = async (category) =>{
 app.listen(port,()=>{
     console.log(`App Listening on port ${port}`);
 })
-
-/**
- * TODO LIST =======================
- * 
- * Chance to add a limit on the every category, so if you're close to the limit you will receive an email.
- * Edit the Category array to be an array of objects with {category:'',limit:''}
- * 
- * Password security
- * 
- * Add an alert when logging fail like "wrong user/pass"
- * 
- * Add "Category Deleted" or "Category Added" allert in Settings
- * 
- */
